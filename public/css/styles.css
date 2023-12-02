@@ -45,7 +45,6 @@ body.dark {
     --info-button-active: #3A7CFD;
 }
 
-
 body {
     background: var(--bg-body);
 }
