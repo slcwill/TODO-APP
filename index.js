@@ -1,5 +1,5 @@
-const express = require("express")
-const exphbs = require("express-handlebars")
+const express = require('express')
+const exphbs = require('express-handlebars')
 const mysql = require('mysql2')
 
 const app = express()
@@ -9,15 +9,14 @@ app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))
 
-// Converter dados do formulário em objeto JavaScript
+// converter dados do formulário em objeto JavaScript
 app.use(express.urlencoded({
     extended: true
 }))
 
 app.use(express.json())
 
-// Rotas
-
+// rotas
 app.get('/limpartarefas', (requisicao, resposta) => {
     const sql = 'DELETE FROM tarefas'
 
@@ -132,10 +131,12 @@ app.get('/ativas', (requisicao, resposta) => {
         SELECT * FROM tarefas
         WHERE completa = 0
     `
+
     conexao.query(sql, (erro, dados) => {
         if (erro) {
             return console.log(erro)
         }
+
         const tarefas = dados.map((dado) => {
             return {
                 id: dado.id,
@@ -143,11 +144,13 @@ app.get('/ativas', (requisicao, resposta) => {
                 completa: false
             }
         })
+
         const quantidadeTarefas = tarefas.length
+
         resposta.render('ativas', { tarefas, quantidadeTarefas })
     })
-})
 
+})
 
 app.get('/', (requisicao, resposta) => {
     const sql = 'SELECT * FROM tarefas'
@@ -165,23 +168,20 @@ app.get('/', (requisicao, resposta) => {
             }
         })
 
+        const tarefasAtivas = tarefas.filter((tarefa) => {
+            return tarefa.completa === false && tarefa
+        })
 
+        const quantidadeTarefasAtivas = tarefasAtivas.length
+
+        resposta.render('home', { tarefas, quantidadeTarefasAtivas })
     })
-
-    const tarefasAtivas = tarefas.filter((tarefa) => {
-        return tarefa.completa === false && tarefa
-    })
-
-    const quantidadeTarefasAtivas = tarefasAtivas.length
-    
-    resposta.render('home', { tarefas, quantidadeTarefasAtivas })
-
 })
 
 const conexao = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "1234",
     database: "todoapp",
     port: 3306
 
